@@ -12,8 +12,8 @@ int main(int argc, char *argv[]) {
     struct environment_st environment = load_environment();
 
     log_debug("FULL_FILE_NAME: %s", environment.FULL_FILE_NAME);
-    char lastIp[16];
 
+    char lastIp[16];
     int ret_saved_ip = get_saved_ip(environment.FULL_FILE_NAME, lastIp, sizeof(lastIp) / sizeof(char));
     if (ret_saved_ip != 0) {
         if (ret_saved_ip == -1) log_debug("File not found");
