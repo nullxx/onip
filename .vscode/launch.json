@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/onip",
+      "stopOnEntry": true,
+      "console": "integratedTerminal",
+      "env": {
+        "CLOUDFLARE_BEARER_TOKEN": "${env:CLOUDFLARE_BEARER_TOKEN}",
+        "CLOUDFLARE_DNS_RECORD_ID": "${env:CLOUDFLARE_DNS_RECORD_ID}",
+        "CLOUDFLARE_RECORD_NAME": "${env:CLOUDFLARE_RECORD_NAME}",
+        "CLOUDFLARE_RECORD_TYPE": "${env:CLOUDFLARE_RECORD_TYPE}",
+        "CLOUDFLARE_RULE_AUTO_ADDED": "${env:CLOUDFLARE_RULE_AUTO_ADDED}",
+        "CLOUDFLARE_RULE_LOCKED": "${env:CLOUDFLARE_RULE_LOCKED}",
+        "CLOUDFLARE_RULE_MANAGED_BY_APPS": "${env:CLOUDFLARE_RULE_MANAGED_BY_APPS}",
+        "CLOUDFLARE_RULE_MANAGED_BY_ARGO_TUNNEL": "${env:CLOUDFLARE_RULE_MANAGED_BY_ARGO_TUNNEL}",
+        "CLOUDFLARE_RULE_PROXIABLE": "${env:CLOUDFLARE_RULE_PROXIABLE}",
+        "CLOUDFLARE_RULE_PROXIED": "${env:CLOUDFLARE_RULE_PROXIED}",
+        "CLOUDFLARE_RULE_TTL": "${env:CLOUDFLARE_RULE_TTL}",
+        "CLOUDFLARE_ZONE_ID": "${env:CLOUDFLARE_ZONE_ID}",
+        "CLOUDFLARE_ZONE_NAME": "${env:CLOUDFLARE_ZONE_NAME}",
+        "DIRECTORY": "${env:DIRECTORY}",
+        "FILE_NAME": "${env:FILE_NAME}",
+        "FULL_FILE_NAME": "${env:FULL_FILE_NAME}",
+        "SUPERALERT_BEARER_TOKEN": "${env:SUPERALERT_BEARER_TOKEN}"
+      },
+      "preLaunchTask": "Build",
+      "args": []
+    }
+  ],
+  "compounds": []
+}

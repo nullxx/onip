@@ -6,7 +6,9 @@ build
 
 data
 
-.vscode
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
 
 .ignored
 

@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "command": "make",
+      "type": "shell",
+      "args": [],
+      "options": { "env": { "MODE": "DEBUG" } },
+      "group": "build"
+    },
+    {
+      "label": "LoadEnv",
+      "command": "source .env.sh",
+      "type": "shell",
+      "args": [],
+      "group": "build",
+      "dependsOn": [{ "type": "Build" }]
+    }
+  ]
+}
