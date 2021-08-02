@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: {{ .Chart.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Chart.Name }}
+    spec:
+      volumes:
+        - name: general-volume
+          persistentVolumeClaim:
+            claimName: dns-updater-volume-claim
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image }}
+        envFrom:
+            - secretRef:
+                name: {{ .Chart.Name }}
+        volumeMounts:
+          - mountPath: "/app/data"
+            name: general-volume
+            readOnly: false
+      imagePullSecrets:
+        - name: gitlab-registry-secret

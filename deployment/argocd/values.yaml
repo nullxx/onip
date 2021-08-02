@@ -1,0 +1,4 @@
+namespace: management
+image: XXX.XXX.com/YYYY/dns-updater:v1.0.0
+# vault secret path (https://github.com/IBM/argocd-vault-plugin)
+secretPath: developer/data/dns-updater
