@@ -33,10 +33,11 @@ struct environment_st load_environment() {
     size_t loaded_env_index = 0;
     for (size_t i = 0; i < arr_size; i++) {
         char *value = getenv(environment_arr[i]);
-        if (value == NULL) {
+        if (value == NULL || value[0] == '\0') {
             log_error("Environment variable not set: %s", environment_arr[i]);
             exit(1);
         }
+        
         log_debug("Trying to load environment var %s", environment_arr[i]);
         if (strcmp(environment_arr[i], "FULL_FILE_NAME") == 0) {
             environment.FULL_FILE_NAME = malloc(1 + strlen(value));
