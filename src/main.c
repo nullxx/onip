@@ -42,14 +42,19 @@ int main(int argc, char *argv[]) {
                 success_updated_cloudflare = update_at_cloudflare(ip);
                 log_debug("Cloudflare response %d", success_updated_cloudflare);
             } while (success_updated_cloudflare != 0);
+            
+            struct notify_response_st notify_response;
 
-            struct notify_response_st notify_response = notify(ip);
+            do {
+                notify_response = notify(ip);
+                log_debug("=> Code %d, msg: %s, error: %d", notify_response.code, notify_response.msg, notify_response.error);
 
-            log_debug("=> Code %d, msg: %s, error: %d", notify_response.code, notify_response.msg, notify_response.error);
+                if (notify_response.code != 1) {
+                    log_error("An error ocurred notifying");
+                }
+            } while (notify_response.code != 1);
 
-            if (notify_response.code != 1) {
-                log_error("An error ocurred notifying");
-            }
+      
 
             log_debug("Saving IP to file");
             int ret_save_ip = save_ip(environment.DIRECTORY, environment.FILE_NAME, ip);
