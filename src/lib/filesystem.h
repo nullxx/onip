@@ -9,5 +9,5 @@ struct saved_ip_st {
     const char *ip;
     int error;
 };
-int get_saved_ip(char *file_name, char *ip, size_t string_length);
+char* get_saved_ip(char *file_name);
 int save_ip(char *dir, char *file_name, char *contents);

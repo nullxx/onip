@@ -13,23 +13,16 @@ int main(int argc, char *argv[]) {
 
     log_debug("FULL_FILE_NAME: %s", environment.FULL_FILE_NAME);
 
-    char lastIp[16];
-    int ret_saved_ip = get_saved_ip(environment.FULL_FILE_NAME, lastIp, sizeof(lastIp) / sizeof(char));
-    if (ret_saved_ip != 0) {
-        if (ret_saved_ip == -1) log_debug("File not found");
-    }
-
-    if (strlen(lastIp) > 0) {
-        log_debug("Last IP (saved): %s", lastIp);
-    }
-
     while (1) {
-        get_saved_ip(environment.FULL_FILE_NAME, lastIp, sizeof(lastIp) / sizeof(char));
+        char * lastIp = get_saved_ip(environment.FULL_FILE_NAME);
+        if (lastIp == NULL) {
+            log_error("Could not get last IP");
+            continue;
+        }
 
-        char ip[16];
-        int ret_get_ip = get_ip(ip);
+        char *ip = get_ip();
 
-        if (ret_get_ip != 0) {
+        if (ip == NULL) {
             log_error("An error had ocurred retrieving public IP");
             continue;
         }
@@ -44,7 +37,6 @@ int main(int argc, char *argv[]) {
             } while (success_updated_cloudflare != 0);
             
             struct notify_response_st notify_response;
-
             do {
                 notify_response = notify(ip);
                 log_debug("=> Code %d, msg: %s, error: %d", notify_response.code, notify_response.msg, notify_response.error);
@@ -65,6 +57,8 @@ int main(int argc, char *argv[]) {
             }
             strcpy(lastIp, ip);
         }
+        free(lastIp);
+        free(ip);
         sleep(1);
     }
 

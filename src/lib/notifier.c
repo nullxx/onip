@@ -16,8 +16,14 @@ struct notify_response_st notify(char ip[]) {
     struct notify_response_st notify_response = {-1, "", 1};
 
     json_object *body_json = json_object_new_object();
-    char body[100];
-    sprintf(body, "New IP **%s**", ip);
+
+    const char *body_tmp = "New IP **%s**";
+    const size_t body_tmp_len = strlen(body_tmp);
+    size_t ip_len = strlen(ip);
+
+    char body[body_tmp_len + ip_len + 1 - 2];
+
+    sprintf(body, body_tmp, ip);
 
     /* build post data START */
     json_object_object_add(body_json, "title", json_object_new_string("Cluster IP updated"));
@@ -26,15 +32,19 @@ struct notify_response_st notify(char ip[]) {
     json_object_object_add(body_json, "risk", json_object_new_string("success"));
     /* build post data END */
 
-    char authorization_header[300];
-    sprintf(authorization_header, "Authorization: Bearer %s", environment.SUPERALERT_BEARER_TOKEN);
+    char *authorization_header_tmp = "Authorization: Bearer %s";
+    size_t authorization_header_tmp_len = strlen(authorization_header_tmp);
+    size_t bearer_len = strlen(environment.SUPERALERT_BEARER_TOKEN);
 
-    char plain_result[10];
-    int ret_call = fetch(SUPERALERT_BASE_URL, "POST", authorization_header, plain_result, body_json);
+    size_t authorization_header_len = authorization_header_tmp_len + bearer_len + 1 - 2;
+    char authorization_header[authorization_header_len];
+    sprintf(authorization_header, authorization_header_tmp, environment.SUPERALERT_BEARER_TOKEN);
 
-    if (ret_call != 0) {
-        log_error("Something wrong in fetch call to cloudflare");
-        notify_response.error = ret_call;
+    char *plain_result = fetch(SUPERALERT_BASE_URL, "POST", authorization_header, body_json);
+
+    if (plain_result == NULL) {
+        log_error("Something wrong in fetch call to superalert");
+        notify_response.error = 1;
         return notify_response;
     }
 
@@ -46,9 +56,11 @@ struct notify_response_st notify(char ip[]) {
 
     notify_response.code = code;
     notify_response.msg = msg;
+    notify_response.error = 0;
 
     json_object_put(body_json);
     json_object_put(response);
 
+    free(plain_result);
     return notify_response;
 }

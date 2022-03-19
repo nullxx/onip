@@ -9,5 +9,5 @@
 
 #define FETCH_IP_URL "http://ident.me"
 
-int get_ip(char* ip);
+char* get_ip();
 void split(char* str, char* sep, char* arr[]);

@@ -1,6 +1,7 @@
 #include "network.h"
+#include <errno.h>
 
-int fetch(char *url, char *method, char *auth_header, char *plain_result, json_object *body) {
+char* fetch(char *url, char *method, char *auth_header, json_object *body) {
     CURL *ch;
     CURLcode rcode;
 
@@ -10,7 +11,8 @@ int fetch(char *url, char *method, char *auth_header, char *plain_result, json_o
 
     if ((ch = curl_easy_init()) == NULL) {
         log_error("Failed to create curl handle in fetch_session");
-        return CURL_NO_HANDLE_ERR;
+        errno = CURL_NO_HANDLE_ERR;
+        return NULL;
     }
 
     headers = curl_slist_append(headers, "Accept: application/json");
@@ -33,16 +35,17 @@ int fetch(char *url, char *method, char *auth_header, char *plain_result, json_o
 
     if (rcode != CURLE_OK || cf->size < 1) {
         log_error("Failed to fetch url (%s) - curl said: %s", url, curl_easy_strerror(rcode));
-        return CURL_FETCH_FAILED;
+        errno = CURL_FETCH_FAILED;
+        return NULL;
     }
-
-    if (cf->payload != NULL) {
-        strcpy(plain_result, cf->payload);
-        free(cf->payload);
-        return 0;
-    } else {
-        log_error("Failed to populate payload");
-        free(cf->payload);
-        return CURL_POPULATE_PAYLOAD_ERR;
-    }
+    return cf->payload;
+    // if (cf->payload != NULL) {
+    //     strcpy(plain_result, cf->payload);
+    //     free(cf->payload);
+    //     return 0;
+    // } else {
+    //     log_error("Failed to populate payload");
+    //     free(cf->payload);
+    //     return CURL_POPULATE_PAYLOAD_ERR;
+    // }
 }

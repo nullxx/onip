@@ -46,12 +46,11 @@ int update_at_cloudflare(char ip[]) {
     json_object_object_add(json_body, "zone_name", json_object_new_string(environment.CLOUDFLARE_ZONE_NAME));
     /* Building POST DATA END */
 
-    char plain_result[100];
-    int ret_call = fetch(url, "PUT", authorization_header, plain_result, json_body);
+    char *plain_result = fetch(url, "PUT", authorization_header, json_body);
 
-    if (ret_call != 0) {
+    if (plain_result == NULL) {
         log_error("Something wrong in fetch call to cloudflare");
-        return ret_call;
+        return 0;
     }
 
     json_object *result = json_tokener_parse_verbose(plain_result, &jerr);
@@ -66,6 +65,8 @@ int update_at_cloudflare(char ip[]) {
 
     json_object_put(json_body);
     json_object_put(result);
+
+    free(plain_result);
 
     return success;
 }

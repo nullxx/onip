@@ -29,7 +29,7 @@ CURLcode curl_fetch_url(CURL *ch, const char *url, struct curl_fetch_st *fetch) 
     CURLcode rcode;
 
     /* init payload */
-    fetch->payload = (char *)calloc(1, sizeof(fetch->payload));
+    fetch->payload = (char *)calloc(1, sizeof(*fetch->payload));
 
     if (fetch->payload == NULL) {
         /* log error */
