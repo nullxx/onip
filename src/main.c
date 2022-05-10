@@ -46,8 +46,6 @@ int main(int argc, char *argv[]) {
                 }
             } while (notify_response.code != 1);
 
-      
-
             log_debug("Saving IP to file");
             int ret_save_ip = save_ip(environment.DIRECTORY, environment.FILE_NAME, ip);
 

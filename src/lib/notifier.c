@@ -40,7 +40,12 @@ struct notify_response_st notify(char ip[]) {
     char authorization_header[authorization_header_len];
     sprintf(authorization_header, authorization_header_tmp, environment.SUPERALERT_BEARER_TOKEN);
 
-    char *plain_result = fetch(SUPERALERT_BASE_URL, "POST", authorization_header, body_json);
+    size_t key_len = strlen(environment.SUPERALERT_KEY);
+    size_t url_len = strlen(SUPERALERT_BASE_URL) + strlen("?key=") + key_len + 1;
+    char url[url_len];
+    sprintf(url, SUPERALERT_BASE_URL "?key=%s", environment.SUPERALERT_KEY);
+
+    char *plain_result = fetch(url, "POST", authorization_header, body_json);
 
     if (plain_result == NULL) {
         log_error("Something wrong in fetch call to superalert");

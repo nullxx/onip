@@ -26,6 +26,8 @@ struct environment_st {
     int CLOUDFLARE_RULE_MANAGED_BY_APPS;
     int CLOUDFLARE_RULE_MANAGED_BY_ARGO_TUNNEL;
     char *SUPERALERT_BEARER_TOKEN;
+    char *SUPERALERT_KEY;
+    
 };
 
 struct environment_st load_environment();

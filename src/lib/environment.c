@@ -10,7 +10,8 @@ char *environment_arr[] = {"FULL_FILE_NAME",
                            "CLOUDFLARE_RECORD_NAME",
                            "CLOUDFLARE_ZONE_NAME",
                            "CLOUDFLARE_RULE_PROXIABLE",
-                           "SUPERALERT_BEARER_TOKEN"};
+                           "SUPERALERT_BEARER_TOKEN",
+                           "SUPERALERT_KEY"};
 static struct environment_st environment;
 
 struct environment_st get_environment() {
@@ -67,7 +68,10 @@ struct environment_st load_environment() {
             environment.SUPERALERT_BEARER_TOKEN = malloc(1 + strlen(value));
             strcpy(environment.SUPERALERT_BEARER_TOKEN, value);
             loaded_env_index++;
-
+        } else if (strcmp(environment_arr[i], "SUPERALERT_KEY") == 0) {
+            environment.SUPERALERT_KEY = malloc(1 + strlen(value));
+            strcpy(environment.SUPERALERT_KEY, value);
+            loaded_env_index++;
         } else if (strcmp(environment_arr[i], "CLOUDFLARE_RECORD_TYPE") == 0) {
             environment.CLOUDFLARE_RECORD_TYPE = malloc(1 + strlen(value));
             strcpy(environment.CLOUDFLARE_RECORD_TYPE, value);
