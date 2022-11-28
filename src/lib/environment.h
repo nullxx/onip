@@ -8,9 +8,6 @@
 
 struct environment_st {
     bool is_inited;
-    char *FULL_FILE_NAME;
-    char *DIRECTORY;
-    char *FILE_NAME;
 
     char *CLOUDFLARE_ZONE_ID;
     char *CLOUDFLARE_DNS_RECORD_ID;
@@ -27,7 +24,12 @@ struct environment_st {
     int CLOUDFLARE_RULE_MANAGED_BY_ARGO_TUNNEL;
     char *SUPERALERT_BEARER_TOKEN;
     char *SUPERALERT_KEY;
-    
+
+    char *MYSQL_HOST;
+    char *MYSQL_USER;
+    char *MYSQL_PWD;
+    int MYSQL__PORT;
+    char *MYSQL_DB;
 };
 
 struct environment_st load_environment();

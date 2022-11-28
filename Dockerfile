@@ -1,7 +1,7 @@
 FROM alpine:3.11.2
 
 # Install dependencies
-RUN apk add build-base curl-dev json-c-dev
+RUN apk add build-base curl-dev json-c-dev mariadb-connector-c-dev
 
 WORKDIR /app
 

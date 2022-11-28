@@ -1,7 +1,7 @@
 #include "lib/cloudflare.h"
 #include "lib/curl_utils.h"
 #include "lib/environment.h"
-#include "lib/filesystem.h"
+#include "lib/storage.h"
 #include "lib/logger.h"
 #include "lib/network.h"
 #include "lib/notifier.h"
@@ -11,10 +11,8 @@ int main(int argc, char *argv[]) {
     log_info("======= STARTING =======");
     struct environment_st environment = load_environment();
 
-    log_debug("FULL_FILE_NAME: %s", environment.FULL_FILE_NAME);
-
     while (1) {
-        char * lastIp = get_saved_ip(environment.FULL_FILE_NAME);
+        char * lastIp = get_saved_ip();
         if (lastIp == NULL) {
             log_error("Could not get last IP");
             continue;
@@ -46,8 +44,8 @@ int main(int argc, char *argv[]) {
                 }
             } while (notify_response.code != 1);
 
-            log_debug("Saving IP to file");
-            int ret_save_ip = save_ip(environment.DIRECTORY, environment.FILE_NAME, ip);
+            log_debug("Saving IP to database");
+            int ret_save_ip = save_ip(ip);
 
             if (ret_save_ip != 0) {
                 log_debug("Failed to write ip");
